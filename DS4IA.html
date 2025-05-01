@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>App Desayunos Sorpresa</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Animate.css CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body class="bg-pink-50 min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md animate__animated animate__fadeIn">
+    <h1 class="text-3xl font-bold text-center mb-6 text-pink-600">🎁 Desayuno Sorpresa</h1>
+    
+    <!-- Nombre del destinatario -->
+    <label class="block font-semibold mb-1">👤 Nombre del destinatario</label>
+    <input type="text" id="destinatario" class="w-full mb-4 p-2 border rounded" placeholder="Ej. María López"/>
+
+    <!-- Tipo de Menú -->
+    <label class="block font-semibold mb-1">🍽️ Tipo de menú</label>
+    <select id="menu" class="w-full mb-4 p-2 border rounded">
+      <option>Clásico</option>
+      <option>Romántico</option>
+      <option>Saludable</option>
+      <option>Personalizado</option>
+    </select>
+
+    <!-- Día -->
+    <label class="block font-semibold mb-1">📅 Día</label>
+    <input type="date" id="fecha" class="w-full mb-4 p-2 border rounded"/>
+
+    <!-- Hora -->
+    <label class="block font-semibold mb-1">⏰ Hora</label>
+    <input type="time" id="hora" class="w-full mb-4 p-2 border rounded"/>
+
+    <!-- Ubicación -->
+    <label class="block font-semibold mb-1">📍 Ubicación</label>
+    <input type="text" id="ubicacion" class="w-full mb-4 p-2 border rounded" placeholder="Dirección de entrega"/>
+
+    <!-- Tipo de Festejo -->
+    <label class="block font-semibold mb-1">🎉 Tipo de festejo</label>
+    <select id="festejo" class="w-full mb-4 p-2 border rounded">
+      <option>Cumpleaños</option>
+      <option>Aniversario</option>
+      <option>Feliz Día</option>
+      <option>Otro</option>
+    </select>
+
+    <!-- Dedicatoria -->
+    <label class="block font-semibold mb-1">📝 Dedicatoria</label>
+    <textarea id="dedicatoria" class="w-full mb-4 p-2 border rounded" placeholder="Escribe un mensaje especial..."></textarea>
+
+    <!-- Alergias -->
+    <label class="block font-semibold mb-1">⚠️ Alergias o restricciones</label>
+    <input type="text" id="alergias" class="w-full mb-4 p-2 border rounded" placeholder="Opcional"/>
+
+    <!-- Botones -->
+    <div class="flex flex-col gap-3">
+      <button onclick="mostrarResumen()" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-2 rounded shadow">Ver Resumen</button>
+      <button onclick="mostrarPrecios()" class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 rounded shadow">💰 Ver precios</button>
+      <button onclick="mostrarPago()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded shadow">✅ Forma de pago</button>
+      <a id="whatsappBtn" href="#" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded text-center shadow">📲 Enviar por WhatsApp</a>
+    </div>
+
+    <!-- Resultado -->
+    <div id="resultado" class="mt-6 text-sm text-gray-700"></div>
+  </div>
+
+  <script>
+    function mostrarResumen() {
+      const destinatario = document.getElementById("destinatario").value;
+      const menu = document.getElementById("menu").value;
+      const fecha = document.getElementById("fecha").value;
+      const hora = document.getElementById("hora").value;
+      const ubicacion = document.getElementById("ubicacion").value;
+      const festejo = document.getElementById("festejo").value;
+      const dedicatoria = document.getElementById("dedicatoria").value;
+      const alergias = document.getElementById("alergias").value;
+
+      const resumen = `
+        Pedido para: ${destinatario}
+        Menú: ${menu}
+        Fecha: ${fecha}
+        Hora: ${hora}
+        Ubicación: ${ubicacion}
+        Festejo: ${festejo}
+        Dedicatoria: ${dedicatoria || 'Ninguna'}
+        Alergias: ${alergias || 'Ninguna'}
+      `;
+
+      const htmlResumen = `
+        <div class="animate__animated animate__fadeInUp">
+          <h2 class="text-lg font-semibold mb-2">📝 Resumen de tu pedido:</h2>
+          <pre class="whitespace-pre-wrap">${resumen}</pre>
+        </div>
+      `;
+      document.getElementById("resultado").innerHTML = htmlResumen;
+
+      // Generar link de WhatsApp con el resumen
+      const mensajeWA = encodeURIComponent("¡Hola! Quiero solicitar el siguiente desayuno sorpresa:\n\n" + resumen);
+      const telefono = "525512345678"; // Reemplaza con tu número de WhatsApp
+      document.getElementById("whatsappBtn").href = `https://wa.me/${telefono}?text=${mensajeWA}`;
+    }
+
+    function mostrarPrecios() {
+      document.getElementById("resultado").innerHTML = `
+        <div class="animate__animated animate__fadeInUp">
+          <h2 class="text-lg font-semibold mb-2">💵 Precios:</h2>
+          <ul class="list-disc list-inside">
+            <li>Clásico: $350 MXN</li>
+            <li>Romántico: $450 MXN</li>
+            <li>Saludable: $400 MXN</li>
+            <li>Personalizado: Desde $500 MXN</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function mostrarPago() {
+      document.getElementById("resultado").innerHTML = `
+        <div class="animate__animated animate__fadeInUp">
+          <h2 class="text-lg font-semibold mb-2">💳 Formas de Pago:</h2>
+          <p>Transferencia bancaria, depósito en OXXO, o pago en efectivo al momento de entrega (con anticipo del 50%).</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
+
